@@ -1,5 +1,14 @@
 # -*- coding:utf-8 -*-
-# 使用surprise构建推荐系统的demo
+# Author: qwchen
+# Date: 2017-7-9
+#
+# 基于surprise实现的推荐系统
+# 数据集为: MovieLens 100k
+# 功能: 
+#   1.训练模型、保存模型、加载模型
+#   2.求item的k个相似item
+#   3.求user对item的打分
+#   4.比较多种不同的推荐算法
 
 import io
 import cPickle as pickle
@@ -23,6 +32,7 @@ def read_item_name(file_name, sep):
     """
     item_rid_to_name = {}
     item_name_to_rid = {}
+    # io模块可以指定编码读取数据，MovieLens数据集的编码为ISO-8859-1
     with io.open(file_name, 'r', encoding='ISO-8859-1') as f:
         for line in f:
             content = line.split(sep)
@@ -123,16 +133,16 @@ def test(algo, trainset, item_rid_to_name, item_name_to_rid):
 
 
 def algo_comp(data, algo):
-	"""
-		比较算法的效果和运行时间
-	"""
+    """
+        比较算法的效果和运行时间
+    """
     print '---------------{0}---------------'.format(algo.__name__)
     start_time = datetime.now()
     algo = algo()
     pref = evaluate(algo, data, measures=['RMSE', 'MAE'])
     print_perf(pref)
     end_time = datetime.now()
-    print '耗时：{}s'.format((end_time - start_time).seconds)
+    print '耗时：{0}s'.format((end_time - start_time).seconds)
     print '-----------------------------------------------'
 
 
